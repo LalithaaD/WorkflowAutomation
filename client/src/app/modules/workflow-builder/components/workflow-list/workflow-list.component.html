@@ -1,0 +1,68 @@
+<div class="workflow-list-container">
+  <div class="workflow-list-header">
+    <h1>Workflows</h1>
+    <button class="btn btn-primary" (click)="createWorkflow()">
+      Create New Workflow
+    </button>
+  </div>
+
+  <div class="loading" *ngIf="isLoading">
+    <p>Loading workflows...</p>
+  </div>
+
+  <div class="error-message" *ngIf="error">
+    {{ error }}
+  </div>
+
+  <div class="workflows-grid" *ngIf="!isLoading && workflows.length > 0">
+    <div class="workflow-card" *ngFor="let workflow of workflows">
+      <div class="workflow-header">
+        <h3>{{ workflow.name }}</h3>
+        <div class="workflow-actions">
+          <button class="btn btn-sm btn-secondary" (click)="viewWorkflow(workflow._id!)">
+            View
+          </button>
+          <button class="btn btn-sm btn-secondary" (click)="editWorkflow(workflow._id!)">
+            Edit
+          </button>
+          <button class="btn btn-sm btn-primary" (click)="executeWorkflow(workflow._id!)" [disabled]="!workflow.isActive">
+            Run
+          </button>
+          <button class="btn btn-sm btn-danger" (click)="deleteWorkflow(workflow._id!)">
+            Delete
+          </button>
+        </div>
+      </div>
+      
+      <p class="workflow-description">{{ workflow.description || 'No description' }}</p>
+      
+      <div class="workflow-stats">
+        <span class="stat">
+          <strong>{{ workflow.steps.length }}</strong> steps
+        </span>
+        <span class="stat">
+          <strong>{{ workflow.executionCount || 0 }}</strong> executions
+        </span>
+        <span class="stat">
+          Status: <span [class]="workflow.isActive ? 'status-active' : 'status-inactive'">
+            {{ workflow.isActive ? 'Active' : 'Inactive' }}
+          </span>
+        </span>
+      </div>
+      
+      <div class="workflow-footer">
+        <small>Created: {{ workflow.createdAt | date:'short' }}</small>
+        <small *ngIf="workflow.lastExecuted">Last run: {{ workflow.lastExecuted | date:'short' }}</small>
+      </div>
+    </div>
+  </div>
+
+  <div class="empty-state" *ngIf="!isLoading && workflows.length === 0">
+    <div class="empty-icon">🔧</div>
+    <h3>No workflows yet</h3>
+    <p>Create your first workflow to get started with automation</p>
+    <button class="btn btn-primary" (click)="createWorkflow()">
+      Create Workflow
+    </button>
+  </div>
+</div>

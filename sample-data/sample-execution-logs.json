@@ -1,0 +1,221 @@
+[
+  {
+    "workflowId": "workflow_1",
+    "userId": "user_1",
+    "status": "completed",
+    "triggerData": {
+      "form": {
+        "name": "John Doe",
+        "email": "john.doe@example.com",
+        "company": "Acme Corp"
+      }
+    },
+    "stepResults": [
+      {
+        "stepId": "trigger_1",
+        "stepType": "trigger",
+        "stepEvent": "form_submission",
+        "status": "completed",
+        "startTime": "2024-01-15T10:00:00Z",
+        "endTime": "2024-01-15T10:00:01Z",
+        "duration": 1000,
+        "input": {
+          "form": {
+            "name": "John Doe",
+            "email": "john.doe@example.com",
+            "company": "Acme Corp"
+          }
+        },
+        "output": {
+          "formData": {
+            "name": "John Doe",
+            "email": "john.doe@example.com",
+            "company": "Acme Corp"
+          }
+        }
+      },
+      {
+        "stepId": "action_1",
+        "stepType": "action",
+        "stepEvent": "send_email",
+        "status": "completed",
+        "startTime": "2024-01-15T10:00:01Z",
+        "endTime": "2024-01-15T10:00:03Z",
+        "duration": 2000,
+        "input": {
+          "form": {
+            "name": "John Doe",
+            "email": "john.doe@example.com",
+            "company": "Acme Corp"
+          }
+        },
+        "output": {
+          "emailSent": true,
+          "to": "john.doe@example.com"
+        }
+      }
+    ],
+    "totalDuration": 3000,
+    "createdAt": "2024-01-15T10:00:00Z"
+  },
+  {
+    "workflowId": "workflow_2",
+    "userId": "user_1",
+    "status": "failed",
+    "triggerData": {
+      "form": {
+        "name": "Jane Smith",
+        "email": "jane.smith@example.com",
+        "companySize": "50"
+      }
+    },
+    "stepResults": [
+      {
+        "stepId": "trigger_1",
+        "stepType": "trigger",
+        "stepEvent": "form_submission",
+        "status": "completed",
+        "startTime": "2024-01-15T11:00:00Z",
+        "endTime": "2024-01-15T11:00:01Z",
+        "duration": 1000,
+        "input": {
+          "form": {
+            "name": "Jane Smith",
+            "email": "jane.smith@example.com",
+            "companySize": "50"
+          }
+        },
+        "output": {
+          "formData": {
+            "name": "Jane Smith",
+            "email": "jane.smith@example.com",
+            "companySize": "50"
+          }
+        }
+      },
+      {
+        "stepId": "condition_1",
+        "stepType": "condition",
+        "stepEvent": "if_condition",
+        "status": "completed",
+        "startTime": "2024-01-15T11:00:01Z",
+        "endTime": "2024-01-15T11:00:02Z",
+        "duration": 1000,
+        "input": {
+          "form": {
+            "name": "Jane Smith",
+            "email": "jane.smith@example.com",
+            "companySize": "50"
+          }
+        },
+        "output": {
+          "conditionResult": false,
+          "inputValue": "50",
+          "expectedValue": "100"
+        }
+      },
+      {
+        "stepId": "action_2",
+        "stepType": "action",
+        "stepEvent": "send_email",
+        "status": "failed",
+        "startTime": "2024-01-15T11:00:02Z",
+        "endTime": "2024-01-15T11:00:05Z",
+        "duration": 3000,
+        "input": {
+          "form": {
+            "name": "Jane Smith",
+            "email": "jane.smith@example.com",
+            "companySize": "50"
+          }
+        },
+        "error": "SMTP connection failed: Connection timeout"
+      }
+    ],
+    "totalDuration": 5000,
+    "error": "SMTP connection failed: Connection timeout",
+    "createdAt": "2024-01-15T11:00:00Z"
+  },
+  {
+    "workflowId": "workflow_3",
+    "userId": "user_1",
+    "status": "running",
+    "triggerData": {
+      "form": {
+        "orderId": "ORD-12345",
+        "customerEmail": "customer@example.com",
+        "customerName": "Bob Johnson",
+        "total": "99.99",
+        "items": "Product A, Product B"
+      }
+    },
+    "stepResults": [
+      {
+        "stepId": "trigger_1",
+        "stepType": "trigger",
+        "stepEvent": "form_submission",
+        "status": "completed",
+        "startTime": "2024-01-15T12:00:00Z",
+        "endTime": "2024-01-15T12:00:01Z",
+        "duration": 1000,
+        "input": {
+          "form": {
+            "orderId": "ORD-12345",
+            "customerEmail": "customer@example.com",
+            "customerName": "Bob Johnson",
+            "total": "99.99",
+            "items": "Product A, Product B"
+          }
+        },
+        "output": {
+          "formData": {
+            "orderId": "ORD-12345",
+            "customerEmail": "customer@example.com",
+            "customerName": "Bob Johnson",
+            "total": "99.99",
+            "items": "Product A, Product B"
+          }
+        }
+      },
+      {
+        "stepId": "action_1",
+        "stepType": "action",
+        "stepEvent": "send_email",
+        "status": "completed",
+        "startTime": "2024-01-15T12:00:01Z",
+        "endTime": "2024-01-15T12:00:03Z",
+        "duration": 2000,
+        "input": {
+          "form": {
+            "orderId": "ORD-12345",
+            "customerEmail": "customer@example.com",
+            "customerName": "Bob Johnson",
+            "total": "99.99",
+            "items": "Product A, Product B"
+          }
+        },
+        "output": {
+          "emailSent": true,
+          "to": "customer@example.com"
+        }
+      },
+      {
+        "stepId": "action_2",
+        "stepType": "action",
+        "stepEvent": "save_to_database",
+        "status": "running",
+        "startTime": "2024-01-15T12:00:03Z",
+        "input": {
+          "form": {
+            "orderId": "ORD-12345",
+            "customerEmail": "customer@example.com",
+            "customerName": "Bob Johnson",
+            "total": "99.99",
+            "items": "Product A, Product B"
+          }
+        }
+      }
+    ],
+    "createdAt": "2024-01-15T12:00:00Z"
+  }
+]

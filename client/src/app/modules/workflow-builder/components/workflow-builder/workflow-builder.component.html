@@ -1,0 +1,116 @@
+<div class="workflow-builder-container">
+  <div class="workflow-builder-header">
+    <div class="workflow-info">
+      <input
+        type="text"
+        [(ngModel)]="workflow.name"
+        placeholder="Workflow Name"
+        class="workflow-name-input"
+        [disabled]="isSaving"
+      >
+      <textarea
+        [(ngModel)]="workflow.description"
+        placeholder="Workflow Description (optional)"
+        class="workflow-description-input"
+        [disabled]="isSaving"
+      ></textarea>
+    </div>
+    
+    <div class="workflow-actions">
+      <button
+        class="btn btn-secondary"
+        (click)="saveWorkflow()"
+        [disabled]="isSaving || !workflow.name.trim()"
+      >
+        <span *ngIf="isSaving">Saving...</span>
+        <span *ngIf="!isSaving">{{ isEditing ? 'Update' : 'Save' }} Workflow</span>
+      </button>
+      
+      <button
+        class="btn btn-primary"
+        (click)="executeWorkflow()"
+        [disabled]="!isEditing || isSaving"
+      >
+        Run Workflow
+      </button>
+    </div>
+  </div>
+
+  <div class="error-message" *ngIf="error">
+    {{ error }}
+  </div>
+
+  <div class="loading" *ngIf="isLoading">
+    <p>Loading workflow...</p>
+  </div>
+
+  <div class="workflow-builder-content" *ngIf="!isLoading">
+    <div class="builder-layout">
+      <!-- Step Library -->
+      <div class="step-library-panel">
+        <h3>Step Library</h3>
+        
+        <div class="step-category">
+          <h4>Triggers</h4>
+          <div class="step-item" (click)="addStep('trigger', 'form_submission')">
+            📝 Form Submission
+          </div>
+          <div class="step-item" (click)="addStep('trigger', 'manual_trigger')">
+            👆 Manual Trigger
+          </div>
+          <div class="step-item" (click)="addStep('trigger', 'webhook')">
+            🔗 Webhook
+          </div>
+        </div>
+
+        <div class="step-category">
+          <h4>Actions</h4>
+          <div class="step-item" (click)="addStep('action', 'send_email')">
+            📧 Send Email
+          </div>
+          <div class="step-item" (click)="addStep('action', 'save_to_database')">
+            💾 Save to Database
+          </div>
+          <div class="step-item" (click)="addStep('action', 'call_webhook')">
+            🌐 Call Webhook
+          </div>
+          <div class="step-item" (click)="addStep('action', 'delay')">
+            ⏱️ Delay
+          </div>
+        </div>
+
+        <div class="step-category">
+          <h4>Conditions</h4>
+          <div class="step-item" (click)="addStep('condition', 'if_condition')">
+            ❓ If Condition
+          </div>
+        </div>
+      </div>
+
+      <!-- Workflow Canvas -->
+      <div class="workflow-canvas">
+        <h3>Workflow Canvas</h3>
+        <div class="canvas-area">
+          <div
+            class="workflow-step"
+            *ngFor="let step of workflow.steps; let i = index"
+            [style.left.px]="step.position?.x || 100"
+            [style.top.px]="step.position?.y || 100 + (i * 80)"
+          >
+            <div class="step-header">
+              <span class="step-type">{{ step.type }}</span>
+              <button class="remove-step" (click)="removeStep(step.id)">×</button>
+            </div>
+            <div class="step-content">
+              <strong>{{ step.event }}</strong>
+            </div>
+          </div>
+          
+          <div class="empty-canvas" *ngIf="workflow.steps.length === 0">
+            <p>Drag steps from the library to build your workflow</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

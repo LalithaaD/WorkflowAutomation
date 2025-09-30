@@ -1,0 +1,110 @@
+<div class="log-details-container">
+  <div class="log-details-header">
+    <button class="btn btn-secondary" (click)="goBack()">
+      ← Back to Logs
+    </button>
+    <h1>Log Details</h1>
+  </div>
+
+  <div class="loading" *ngIf="isLoading">
+    <p>Loading log details...</p>
+  </div>
+
+  <div class="error-message" *ngIf="error">
+    {{ error }}
+  </div>
+
+  <div class="log-details-content" *ngIf="!isLoading && log">
+    <!-- Log Overview -->
+    <div class="log-overview">
+      <div class="overview-header">
+        <div class="log-status">
+          <span class="status-icon">{{ getStatusIcon(log.status) }}</span>
+          <span class="status-text" [class]="getStatusClass(log.status)">
+            {{ log.status | titlecase }}
+          </span>
+        </div>
+        <div class="log-meta">
+          <div class="meta-item">
+            <strong>Started:</strong> {{ log.createdAt | date:'medium' }}
+          </div>
+          <div class="meta-item" *ngIf="log.totalDuration">
+            <strong>Duration:</strong> {{ log.totalDuration }}ms
+          </div>
+        </div>
+      </div>
+      
+      <div class="log-info">
+        <div class="info-item">
+          <strong>Workflow ID:</strong> {{ log.workflowId }}
+        </div>
+        <div class="info-item" *ngIf="log.stepResults">
+          <strong>Total Steps:</strong> {{ log.stepResults.length }}
+        </div>
+      </div>
+      
+      <div class="log-error" *ngIf="log.error">
+        <h3>Error Details</h3>
+        <div class="error-content">{{ log.error }}</div>
+      </div>
+    </div>
+
+    <!-- Step Results -->
+    <div class="step-results" *ngIf="log.stepResults && log.stepResults.length > 0">
+      <h2>Step Execution Results</h2>
+      
+      <div class="steps-timeline">
+        <div class="step-item" *ngFor="let step of log.stepResults; let i = index">
+          <div class="step-header">
+            <div class="step-number">{{ i + 1 }}</div>
+            <div class="step-info">
+              <div class="step-name">{{ step.stepEvent }}</div>
+              <div class="step-type">{{ step.stepType }}</div>
+            </div>
+            <div class="step-status">
+              <span class="step-status-icon">{{ getStepStatusIcon(step.status) }}</span>
+              <span class="step-status-text" [class]="getStepStatusClass(step.status)">
+                {{ step.status | titlecase }}
+              </span>
+            </div>
+          </div>
+          
+          <div class="step-details">
+            <div class="step-timing" *ngIf="step.startTime">
+              <div class="timing-item">
+                <strong>Started:</strong> {{ step.startTime | date:'medium' }}
+              </div>
+              <div class="timing-item" *ngIf="step.endTime">
+                <strong>Ended:</strong> {{ step.endTime | date:'medium' }}
+              </div>
+              <div class="timing-item" *ngIf="step.duration">
+                <strong>Duration:</strong> {{ step.duration }}ms
+              </div>
+            </div>
+            
+            <div class="step-data" *ngIf="step.input">
+              <h4>Input Data</h4>
+              <pre class="data-json">{{ step.input | json }}</pre>
+            </div>
+            
+            <div class="step-data" *ngIf="step.output">
+              <h4>Output Data</h4>
+              <pre class="data-json">{{ step.output | json }}</pre>
+            </div>
+            
+            <div class="step-error" *ngIf="step.error">
+              <h4>Error</h4>
+              <div class="error-content">{{ step.error }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Trigger Data -->
+    <div class="trigger-data" *ngIf="log.triggerData">
+      <h2>Trigger Data</h2>
+      <pre class="data-json">{{ log.triggerData | json }}</pre>
+    </div>
+  </div>
+</div>

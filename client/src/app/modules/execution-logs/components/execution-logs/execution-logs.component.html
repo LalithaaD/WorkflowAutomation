@@ -1,0 +1,98 @@
+<div class="execution-logs-container">
+  <div class="logs-header">
+    <h1>Execution Logs</h1>
+    
+    <div class="filters">
+      <select [(ngModel)]="statusFilter" (change)="onStatusFilterChange()" class="filter-select">
+        <option value="">All Statuses</option>
+        <option value="completed">Completed</option>
+        <option value="failed">Failed</option>
+        <option value="running">Running</option>
+        <option value="cancelled">Cancelled</option>
+      </select>
+      
+      <input
+        type="text"
+        [(ngModel)]="workflowFilter"
+        (input)="onWorkflowFilterChange()"
+        placeholder="Filter by workflow ID"
+        class="filter-input"
+      >
+    </div>
+  </div>
+
+  <div class="loading" *ngIf="isLoading">
+    <p>Loading logs...</p>
+  </div>
+
+  <div class="error-message" *ngIf="error">
+    {{ error }}
+  </div>
+
+  <div class="logs-content" *ngIf="!isLoading">
+    <div class="logs-stats" *ngIf="total > 0">
+      <p>Showing {{ logs.length }} of {{ total }} logs</p>
+    </div>
+
+    <div class="logs-list" *ngIf="logs.length > 0">
+      <div class="log-item" *ngFor="let log of logs" (click)="viewLogDetails(log._id!)">
+        <div class="log-header">
+          <div class="log-status">
+            <span class="status-icon">{{ getStatusIcon(log.status) }}</span>
+            <span class="status-text" [class]="getStatusClass(log.status)">
+              {{ log.status | titlecase }}
+            </span>
+          </div>
+          <div class="log-time">
+            {{ log.createdAt | date:'short' }}
+          </div>
+        </div>
+        
+        <div class="log-details">
+          <div class="log-info">
+            <strong>Workflow ID:</strong> {{ log.workflowId }}
+          </div>
+          <div class="log-info" *ngIf="log.totalDuration">
+            <strong>Duration:</strong> {{ log.totalDuration }}ms
+          </div>
+          <div class="log-info" *ngIf="log.stepResults">
+            <strong>Steps:</strong> {{ log.stepResults.length }}
+          </div>
+        </div>
+        
+        <div class="log-error" *ngIf="log.error">
+          <strong>Error:</strong> {{ log.error }}
+        </div>
+      </div>
+    </div>
+
+    <div class="empty-state" *ngIf="logs.length === 0">
+      <div class="empty-icon">📋</div>
+      <h3>No logs found</h3>
+      <p>No execution logs match your current filters</p>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination" *ngIf="totalPages > 1">
+      <button
+        class="btn btn-secondary"
+        (click)="goToPage(currentPage - 1)"
+        [disabled]="currentPage === 1"
+      >
+        Previous
+      </button>
+      
+      <span class="page-info">
+        Page {{ currentPage }} of {{ totalPages }}
+      </span>
+      
+      <button
+        class="btn btn-secondary"
+        (click)="goToPage(currentPage + 1)"
+        [disabled]="currentPage === totalPages"
+      >
+        Next
+      </button>
+    </div>
+  </div>
+</div>

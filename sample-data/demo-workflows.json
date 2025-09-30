@@ -1,0 +1,289 @@
+[
+  {
+    "name": "Welcome Email Automation",
+    "description": "Automatically send a welcome email when a new user registers",
+    "steps": [
+      {
+        "id": "trigger_1",
+        "type": "trigger",
+        "event": "form_submission",
+        "config": {
+          "formId": "user_registration"
+        },
+        "position": {
+          "x": 100,
+          "y": 100
+        }
+      },
+      {
+        "id": "action_1",
+        "type": "action",
+        "event": "send_email",
+        "config": {
+          "to": "{{form.email}}",
+          "subject": "Welcome to Our Platform!",
+          "body": "Hi {{form.name}},\n\nWelcome to our platform! We're excited to have you on board.\n\nBest regards,\nThe Team"
+        },
+        "position": {
+          "x": 400,
+          "y": 100
+        }
+      }
+    ],
+    "isActive": true
+  },
+  {
+    "name": "Lead Qualification Workflow",
+    "description": "Qualify leads based on company size and send appropriate follow-up",
+    "steps": [
+      {
+        "id": "trigger_1",
+        "type": "trigger",
+        "event": "form_submission",
+        "config": {
+          "formId": "contact_form"
+        },
+        "position": {
+          "x": 100,
+          "y": 100
+        }
+      },
+      {
+        "id": "condition_1",
+        "type": "condition",
+        "event": "if_condition",
+        "config": {
+          "condition": "form.companySize",
+          "operator": "greater_than",
+          "value": "100"
+        },
+        "position": {
+          "x": 400,
+          "y": 100
+        }
+      },
+      {
+        "id": "action_1",
+        "type": "action",
+        "event": "send_email",
+        "config": {
+          "to": "{{form.email}}",
+          "subject": "Enterprise Solution Inquiry",
+          "body": "Hi {{form.name}},\n\nThank you for your interest in our enterprise solutions. Our sales team will contact you within 24 hours.\n\nBest regards,\nEnterprise Sales Team"
+        },
+        "position": {
+          "x": 700,
+          "y": 50
+        }
+      },
+      {
+        "id": "action_2",
+        "type": "action",
+        "event": "send_email",
+        "config": {
+          "to": "{{form.email}}",
+          "subject": "Small Business Solutions",
+          "body": "Hi {{form.name}},\n\nThank you for your interest! Check out our small business solutions that might be perfect for your company.\n\nBest regards,\nSmall Business Team"
+        },
+        "position": {
+          "x": 700,
+          "y": 150
+        }
+      }
+    ],
+    "isActive": true
+  },
+  {
+    "name": "Order Processing Pipeline",
+    "description": "Process orders with confirmation emails and inventory updates",
+    "steps": [
+      {
+        "id": "trigger_1",
+        "type": "trigger",
+        "event": "form_submission",
+        "config": {
+          "formId": "order_form"
+        },
+        "position": {
+          "x": 100,
+          "y": 100
+        }
+      },
+      {
+        "id": "action_1",
+        "type": "action",
+        "event": "send_email",
+        "config": {
+          "to": "{{form.customerEmail}}",
+          "subject": "Order Confirmation - #{{form.orderId}}",
+          "body": "Hi {{form.customerName}},\n\nYour order has been received and is being processed.\n\nOrder Details:\n- Order ID: {{form.orderId}}\n- Total: ${{form.total}}\n- Items: {{form.items}}\n\nWe'll send you a tracking number once your order ships.\n\nThank you for your business!"
+        },
+        "position": {
+          "x": 400,
+          "y": 50
+        }
+      },
+      {
+        "id": "action_2",
+        "type": "action",
+        "event": "save_to_database",
+        "config": {
+          "collection": "orders",
+          "data": {
+            "orderId": "{{form.orderId}}",
+            "customerEmail": "{{form.customerEmail}}",
+            "total": "{{form.total}}",
+            "status": "processing",
+            "createdAt": "{{form.timestamp}}"
+          }
+        },
+        "position": {
+          "x": 400,
+          "y": 150
+        }
+      },
+      {
+        "id": "action_3",
+        "type": "action",
+        "event": "call_webhook",
+        "config": {
+          "url": "https://api.inventory-system.com/update-stock",
+          "method": "POST",
+          "headers": {
+            "Authorization": "Bearer {{env.INVENTORY_API_KEY}}",
+            "Content-Type": "application/json"
+          },
+          "data": {
+            "items": "{{form.items}}",
+            "action": "reserve"
+          }
+        },
+        "position": {
+          "x": 400,
+          "y": 250
+        }
+      }
+    ],
+    "isActive": true
+  },
+  {
+    "name": "Customer Feedback Processing",
+    "description": "Process customer feedback and route to appropriate teams",
+    "steps": [
+      {
+        "id": "trigger_1",
+        "type": "trigger",
+        "event": "form_submission",
+        "config": {
+          "formId": "feedback_form"
+        },
+        "position": {
+          "x": 100,
+          "y": 100
+        }
+      },
+      {
+        "id": "condition_1",
+        "type": "condition",
+        "event": "if_condition",
+        "config": {
+          "condition": "form.rating",
+          "operator": "less_than",
+          "value": "3"
+        },
+        "position": {
+          "x": 400,
+          "y": 100
+        }
+      },
+      {
+        "id": "action_1",
+        "type": "action",
+        "event": "send_email",
+        "config": {
+          "to": "support@company.com",
+          "subject": "Negative Feedback Alert - {{form.customerEmail}}",
+          "body": "A customer has submitted negative feedback:\n\nCustomer: {{form.customerEmail}}\nRating: {{form.rating}}/5\nFeedback: {{form.message}}\n\nPlease follow up immediately."
+        },
+        "position": {
+          "x": 700,
+          "y": 50
+        }
+      },
+      {
+        "id": "action_2",
+        "type": "action",
+        "event": "send_email",
+        "config": {
+          "to": "{{form.customerEmail}}",
+          "subject": "Thank you for your feedback",
+          "body": "Hi {{form.customerName}},\n\nThank you for taking the time to provide feedback. We appreciate your input and will use it to improve our services.\n\nBest regards,\nCustomer Success Team"
+        },
+        "position": {
+          "x": 700,
+          "y": 150
+        }
+      }
+    ],
+    "isActive": true
+  },
+  {
+    "name": "Newsletter Signup Automation",
+    "description": "Welcome new newsletter subscribers with a series of emails",
+    "steps": [
+      {
+        "id": "trigger_1",
+        "type": "trigger",
+        "event": "form_submission",
+        "config": {
+          "formId": "newsletter_signup"
+        },
+        "position": {
+          "x": 100,
+          "y": 100
+        }
+      },
+      {
+        "id": "action_1",
+        "type": "action",
+        "event": "send_email",
+        "config": {
+          "to": "{{form.email}}",
+          "subject": "Welcome to our newsletter!",
+          "body": "Hi {{form.name}},\n\nThank you for subscribing to our newsletter! You'll receive our latest updates and exclusive content.\n\nBest regards,\nThe Newsletter Team"
+        },
+        "position": {
+          "x": 400,
+          "y": 50
+        }
+      },
+      {
+        "id": "action_2",
+        "type": "action",
+        "event": "delay",
+        "config": {
+          "duration": 86400000
+        },
+        "position": {
+          "x": 400,
+          "y": 150
+        }
+      },
+      {
+        "id": "action_3",
+        "type": "action",
+        "event": "send_email",
+        "config": {
+          "to": "{{form.email}}",
+          "subject": "Here's what you can expect from our newsletter",
+          "body": "Hi {{form.name}},\n\nHere's what you can expect from our newsletter:\n\n- Weekly industry insights\n- Exclusive offers and discounts\n- Product updates and announcements\n- Tips and best practices\n\nWe're excited to share valuable content with you!\n\nBest regards,\nThe Newsletter Team"
+        },
+        "position": {
+          "x": 700,
+          "y": 150
+        }
+      }
+    ],
+    "isActive": true
+  }
+]
