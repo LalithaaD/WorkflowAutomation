@@ -2,7 +2,7 @@
 
 A full-stack workflow automation web application similar to a mini-Zapier, built with Angular 16+ frontend, Node.js + Express backend, and MongoDB database.
 
-## 🚀 Features
+## Features
 
 ### Core Functionality
 - **User Authentication**: JWT-based login/register system
@@ -23,7 +23,7 @@ A full-stack workflow automation web application similar to a mini-Zapier, built
 - **Drag & Drop**: Easy workflow building with Angular CDK
 - **Real-time Feedback**: Live updates during workflow execution
 
-## 🏗️ Architecture
+## Architecture
 
 ### Backend (Node.js + Express)
 ```
@@ -64,7 +64,7 @@ client/src/app/
 - **Workflows**: Workflow definitions with steps and configuration
 - **Logs**: Execution history with detailed step results
 
-## 🛠️ Installation & Setup
+## Installation & Setup
 
 ### Prerequisites
 - Node.js 18+ and npm
@@ -198,7 +198,7 @@ npm run client
 - `GET /api/logs/:id` - Get specific log details
 - `GET /api/logs/stats/dashboard` - Get dashboard statistics
 
-## 🎨 Sample Data
+## Sample Data
 
 The application includes sample workflows and execution logs:
 
@@ -244,94 +244,3 @@ EMAIL_PASS=your-email-password
 CLIENT_URL=https://your-frontend-domain.com
 ```
 
-## 🧪 Testing
-
-### Backend Testing
-```bash
-# Run backend tests
-npm test
-```
-
-### Frontend Testing
-```bash
-cd client
-npm test
-```
-
-## 📝 Workflow JSON Structure
-
-```json
-{
-  "id": "workflowId",
-  "userId": "userId",
-  "name": "Workflow Name",
-  "description": "Workflow description",
-  "steps": [
-    {
-      "id": "step_1",
-      "type": "trigger",
-      "event": "form_submission",
-      "config": {
-        "formId": "contactForm"
-      },
-      "position": {
-        "x": 100,
-        "y": 100
-      }
-    },
-    {
-      "id": "step_2",
-      "type": "action",
-      "event": "send_email",
-      "config": {
-        "to": "{{form.email}}",
-        "subject": "Thank you",
-        "body": "Welcome message"
-      },
-      "position": {
-        "x": 400,
-        "y": 100
-      }
-    }
-  ],
-  "isActive": true,
-  "createdAt": "2024-01-15T10:00:00Z",
-  "updatedAt": "2024-01-15T10:00:00Z"
-}
-```
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature-name`
-3. Commit changes: `git commit -am 'Add feature'`
-4. Push to branch: `git push origin feature-name`
-5. Submit a pull request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## 🆘 Support
-
-For support and questions:
-- Create an issue in the repository
-- Check the documentation
-- Review the sample data and workflows
-
-## 🔮 Future Enhancements
-
-- [ ] More trigger types (scheduled, file upload, etc.)
-- [ ] Advanced condition logic (AND/OR operators)
-- [ ] Workflow templates and sharing
-- [ ] Team collaboration features
-- [ ] Advanced analytics and reporting
-- [ ] Webhook testing tools
-- [ ] Workflow versioning
-- [ ] API rate limiting and quotas
-- [ ] Multi-tenant support
-- [ ] Mobile app
-
----
-
-Built with ❤️ using Angular, Node.js, Express, and MongoDB
