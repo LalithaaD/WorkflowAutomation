@@ -136,7 +136,7 @@ npm run client
 - Frontend: http://localhost:4200
 - Backend API: http://localhost:3000
 
-## 📖 Usage Guide
+## Usage Guide
 
 ### 1. User Registration/Login
 - Navigate to the login page
@@ -176,7 +176,7 @@ npm run client
 - Execution Logs section provides detailed run history
 - Click on any log to see step-by-step execution details
 
-## 🔧 API Endpoints
+## API Endpoints
 
 ### Authentication
 - `POST /api/auth/register` - User registration
@@ -213,7 +213,7 @@ The application includes sample workflows and execution logs:
 - `sample-data/demo-workflows.json` - Pre-built workflow templates
 - `sample-data/sample-execution-logs.json` - Example execution logs
 
-## 🔒 Security Features
+## Security Features
 
 - JWT-based authentication
 - Password hashing with bcrypt
@@ -221,7 +221,7 @@ The application includes sample workflows and execution logs:
 - Input validation and sanitization
 - Protected API routes
 
-## 🚀 Deployment
+## Deployment
 
 ### Backend Deployment
 1. Set production environment variables
